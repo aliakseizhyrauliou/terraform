@@ -54,3 +54,13 @@ module "ec2" {
   key_name = module.key_pair.key_pair_name
 }
 
+
+module "lb" {
+  source = "./modules/alb"
+
+  security_groups = [ module.sg.alb_sg_id ]
+  subnets = [ module.vpc.private_subnet_id, module.vpc.public_subnet_id]
+  vpc_id = module.vpc.vpc_id
+  site1 = module.ec2.instance_site1_id
+  site2 = module.ec2.instance_site2_id
+}

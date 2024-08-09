@@ -1,3 +1,8 @@
+data "aws_availability_zones" "available" {
+   state = "available"
+}
+
+
 //сеть
 resource "aws_vpc" "main" {
   cidr_block = var.cidr_block
@@ -11,7 +16,7 @@ resource "aws_vpc" "main" {
 resource "aws_subnet" "public" {
   vpc_id     = aws_vpc.main.id
   cidr_block = var.public_subnet_cidr
-  availability_zone = var.availability_zone
+  availability_zone = data.aws_availability_zones.available.names[1]
   map_public_ip_on_launch = true
 
   tags = {
@@ -23,7 +28,18 @@ resource "aws_subnet" "public" {
 resource "aws_subnet" "private" {
   vpc_id     = aws_vpc.main.id
   cidr_block = var.private_subnet_cidr
-  availability_zone = var.availability_zone
+  availability_zone = data.aws_availability_zones.available.names[0]
+
+  tags = {
+    Name = var.private_subnet_name
+  }
+}
+
+//приватная подсеть
+resource "aws_subnet" "private2" {
+  vpc_id     = aws_vpc.main.id
+  cidr_block = "10.0.3.0/24"
+  availability_zone = data.aws_availability_zones.available.names[1]
 
   tags = {
     Name = var.private_subnet_name
