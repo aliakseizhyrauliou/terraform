@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-west-1"
+  region = var.aws_region
 }
 
 module "vpc" {
@@ -27,12 +27,30 @@ module "vpc" {
   private_subnet_name = "my_private_subnet"
 
   //subnet common
-  availability_zone = "us-east-1a"
+  availability_zone = "us-west-1b"
 
   
   aws_route_table_name = "private_route_table"
+  
+}
+
+module "sg" {
+  source = "./modules/sg"
+  vpc_id = module.vpc.vpc_id
+}
+
+module "key_pair" {
+  source = "./modules/key_pair"
 }
 
 
+module "ec2" {
+  source = "./modules/ec2"
 
+  instance_count = 2
+  instance_type = "t3.micro"
+  subnet_id = module.vpc.public_subnet_id
+  security_groups = [module.sg.ec2_sg_id] 
+  key_name = module.key_pair.key_pair_name
+}
 
