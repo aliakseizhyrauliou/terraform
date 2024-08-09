@@ -50,6 +50,24 @@ resource "aws_lb_listener" "alb-listener1" {
     protocol          = "HTTP"
 
     default_action {
+      type = "redirect"
+
+      redirect {
+        port        = "443"
+        protocol    = "HTTPS"
+        status_code = "HTTP_301"
+      }
+    }
+}
+
+
+resource "aws_lb_listener" "alb-listener2" {
+    load_balancer_arn = aws_lb.lb.arn
+    port              = 443
+    protocol          = "HTTPS"
+    certificate_arn = var.cert
+
+    default_action {
         type = "forward"
 
         forward {
@@ -66,7 +84,7 @@ resource "aws_lb_listener" "alb-listener1" {
 }
 
 resource "aws_lb_listener_rule" "site1_rule" {
-    listener_arn = aws_lb_listener.alb-listener1.arn
+    listener_arn = aws_lb_listener.alb-listener2.arn
     priority     = 10
 
     action {
@@ -82,7 +100,7 @@ resource "aws_lb_listener_rule" "site1_rule" {
 }
 
 resource "aws_lb_listener_rule" "site2_rule" {
-    listener_arn = aws_lb_listener.alb-listener1.arn
+    listener_arn = aws_lb_listener.alb-listener2.arn
     priority     = 20
 
     action {

@@ -23,3 +23,7 @@ variable "site1" {
 variable "site2" {
   type = string
 }
+
+variable "cert" {
+  type = string
+}
