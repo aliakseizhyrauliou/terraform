@@ -57,6 +57,8 @@ module "ec2" {
 module "route53" {
   source = "./modules/route53"
   aws_route53_zone = "lab.up4soft.uk"
+  alb_dns_name = module.lb.alb_domain
+  domain_name = var.domain_name
 }
 
 module "lb" {
