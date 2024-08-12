@@ -6,5 +6,5 @@ variable "aws_region" {
 
 variable "domain_name" {
   type = string
-  default = "task9.lab.up4soft.uk"
+  default = "mytask9.lab.up4soft.uk"
 } 

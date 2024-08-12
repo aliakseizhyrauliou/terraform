@@ -94,7 +94,7 @@ resource "aws_lb_listener_rule" "site1_rule" {
 
     condition {
         path_pattern {
-            values = ["/site1/*"]
+            values = ["/site1", "/site1/*"]
         }
     }
 }
@@ -110,7 +110,7 @@ resource "aws_lb_listener_rule" "site2_rule" {
 
     condition {
         path_pattern {
-            values = ["/site2/*"]
+            values = ["/site2", "/site2/*"]
         }
     }
 }

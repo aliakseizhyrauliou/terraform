@@ -39,11 +39,11 @@ resource "aws_instance" "site2" {
   user_data = var.user_data_site2
 }
 
-resource "aws_eip" "one" {
+resource "aws_eip" "site1_ip" {
   instance = aws_instance.site1.id
 }
 
-resource "aws_eip" "two" {
+resource "aws_eip" "site2_ip" {
   instance = aws_instance.site2.id
 }
 
